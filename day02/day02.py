@@ -47,9 +47,18 @@ def part1(box_ids):
     print("PART 1: " + str(checksum))
 
 # PART 2
+# Process the character arrays in parallel, comparing chars.
+# If the chars are different, keep a count of how many differences are found.
+# If the chars are identical, shove em into an output string.
 def part2(box_ids):
-    result = ""
-    print("PART 2: " + str(result))
+    output = ""
+    for box1 in box_ids:
+        for box2 in box_ids:
+            if box1 != box2:
+                print(box1)
+                print(box2)
+
+    print("PART 2: " + str(output))
 
 if __name__ == '__main__':
     print("EXAMPLE1: ")
