@@ -19,18 +19,17 @@ def load_input(infile):
 class Rectangle:
 	"""A rectangle in four numbers... maybe a few more."""
 
-
-	def __init__():
-		self.x = 0
-		self.y = 0
-		self.w = 0
-		self.h = 0
-
-	def __init__(self, x, y, w, h):
+	def __init__(self, x = None, y = None , w = None , h = None):
 		self.x = x
 		self.y = y
 		self.w = w
 		self.h = h
+
+	def __str__(self):
+		result = "(x, y): (" + str(self.x) + ", " + str(self.y) + ")"
+		result += "\n"
+		result += "(w, h): (" + str(self.w) + ", " + str(self.h) + ")"
+		return result
 	
 	def left(self):
 		return self.x
@@ -52,12 +51,12 @@ def part1(arg):
 	output = ""
 	test = Rectangle(7, 5, 2, 3)
 	test2 = Rectangle()
-	print(str(test.left))
+	print("A dead ass rectangle: ")
+	print(str(test2))
+	print(str(test2.area()))
+	print("A less-so dead ass rectangle: ")
+	print(str(test))
 	print(str(test.area()))
-	print(str(test.right()))
-	print("A dead ass rectangle: " + str(test2.x) + str(test2.y) + str(test2.w) + str(test2.h))
-	print(test)
-	print(test2)
 	print("PART 1: " + str(output))
 
 # PART 2
