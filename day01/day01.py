@@ -10,6 +10,7 @@ def load_input(infile):
     with open(infile, 'r') as fp:
         for line in fp:
             line = line.strip()
+            line = int(line)
             if line:
                 lines.append(line)
 
@@ -30,13 +31,33 @@ def part1(freq_changes):
     # Frequency always starts at 0
     frequency = 0
     for change in freq_changes:
-        frequency += int(change)
+        frequency += change
 
     print("PART 1: " + str(frequency))
 
 # PART 2
+# Must check for duplicates as we go.
+# May need to iterate through list multiple times.
+def part2(freq_changes):
+    frequency = 0
+    duplicate_found = False
+    counts = { frequency: 1 }
+    while not duplicate_found:
+        for change in freq_changes:
+            frequency += change
+            if frequency in counts:
+                print("Incrementing counts[" + str(frequency) + "]")
+                counts[frequency] += 1
+            else:
+                counts[frequency] = 1
+
+            if counts[frequency]> 1:
+                duplicate_found = True
+                print("PART 2: " + str(frequency))
+                return frequency
 
 if __name__ == '__main__':
     example1()
     input = load_input(INPUTFILE)
     part1(input)
+    part2(input)
