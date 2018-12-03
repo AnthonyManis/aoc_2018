@@ -15,21 +15,47 @@ def load_input(infile):
 
         return lines
 
-# Example
-def example1():
-    print("EXAMPLE: ")
 # PART 1
-def part1(input):
-    result = ""
-    print("PART 1: " + str(result))
+def part1(box_ids):
+    # key: box id, value: dict of character occurrence counts
+    box_stats = {}
+    for box in box_ids:
+        # Store occurrences of each letter for this box id here
+        occurrences = {}
+        # list of characters in the box id, in order?
+        characters = list(box)
+        for c in characters:
+            if c in occurrences:
+                occurrences[c] += 1
+            else:
+                occurrences[c] = 1
+
+            box_stats[box] = occurrences
+        
+    # Now find matches
+    match_count = {}
+    for key in box_stats:
+        for i in range(1,len(key)):
+            if i in box_stats[key].values():
+                if i in match_count:
+                    match_count[i] += 1
+                else:
+                    match_count[i] = 1
+        
+    print(match_count)
+    checksum = match_count[2] * match_count[3]
+    print("PART 1: " + str(checksum))
 
 # PART 2
-def part2(input):
+def part2(box_ids):
     result = ""
     print("PART 2: " + str(result))
 
 if __name__ == '__main__':
-    example1()
+    print("EXAMPLE1: ")
+    example1_input = [ 'abcdef', 'bababc', 'abbcde', 'abcccd', 'aabcdd', 'abcdee', 'ababab' ]
+    part1(example1_input)
+    print("END OF EXAMPLES")
     input = load_input(INPUTFILE)
     part1(input)
     part2(input)
