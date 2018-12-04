@@ -40,21 +40,15 @@ def part1(freq_changes):
 # May need to iterate through list multiple times.
 def part2(freq_changes):
 	frequency = 0
-	duplicate_found = False
 	counts = { frequency: 1 }
-	while not duplicate_found:
+	while counts[frequency] < 2:
 		for change in freq_changes:
 			frequency += change
-			if frequency in counts:
-				print("Incrementing counts[" + str(frequency) + "]")
-				counts[frequency] += 1
-			else:
-				counts[frequency] = 1
+			counts[frequency] = 1 + counts.get(frequency, 0)
 
-			if counts[frequency]> 1:
-				duplicate_found = True
+			if counts[frequency] > 1:
 				print("PART 2: " + str(frequency))
-				return frequency
+				break
 
 if __name__ == '__main__':
 	example1()
