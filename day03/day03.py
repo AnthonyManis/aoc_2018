@@ -48,20 +48,7 @@ class Rectangle:
 	def area(self):
 		return self.w * self.h
 
-	def containsPoint(self, point_x, point_y):
-		if self.left() < point_x <= self.right():
-			if self.top() < point_y <= self.bottom():
-				return True
-		
-		return False
-
 	def intersectionAsRectangle(self, other):
-		x_overlap = 0
-		y_overlap = 0
-		left_edge = 0
-		right_edge = 0
-		top_edge = 0
-		bottom_edge = 0
 		intersection = Rectangle(self.id + other.id)
 
 		# Is other.left contained in self?
