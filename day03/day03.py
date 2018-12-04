@@ -50,7 +50,8 @@ class Rectangle:
 
 	def intersectionAsRectangle(self, other):
 		intersection = Rectangle(self.id + other.id)
-
+		left_edge = right_edge = top_edge = bottom_edge = 0
+		x_overlap = y_overlap = 0
 		# Is other.left contained in self?
 		if self.left() <= other.left() <= self.right():
 			left_edge = other.left()
@@ -83,7 +84,7 @@ class Rectangle:
 
 
 def part1(arg):
-	output = ""
+	output = 0
 	# Construct a list of rectangles from the input lines.
 	list_rectangles = []
 	for line in arg:
@@ -98,6 +99,20 @@ def part1(arg):
 	# Find overlap between two rectangles, and mark that area as a 1 in grid.
 	grid = [[0 for x in range(1000)] for y in range(1000)]
 
+	for rect1 in list_rectangles:
+		for rect2 in list_rectangles:
+			if rect1 is not rect2:
+				intersection = rect1.intersectionAsRectangle(rect2)
+				if intersection:
+					for i in range(intersection.left(), intersection.right()):
+						for j in range(intersection.top(),intersection.bottom()):
+							grid[i][j] = 1
+
+	# Count up the 1s in the grid:
+	for x in grid:
+		for y in x:
+			output += y
+			
 
 	print("PART 1: " + str(output))
 
@@ -114,6 +129,8 @@ if __name__ == '__main__':
 	print(r1.intersectionAsRectangle(r2))
 	print(r1.intersectionAsRectangle(r3))
 	print(r2.intersectionAsRectangle(r3))
+	example1 = ["#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4", "#3 @ 5,5: 2x2"]	
+	part1(example1)
 	print("EXAMPLE 2: ")
 	#part2(example2_input)
 	print("END OF EXAMPLES")
