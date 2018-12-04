@@ -3,6 +3,8 @@
 # Advent of Code 2018 - Day 3
 #
 
+import re
+
 INPUTFILE = 'input.txt'
 
 def load_input(infile):
@@ -19,16 +21,16 @@ def load_input(infile):
 class Rectangle:
 	"""A rectangle in four numbers... maybe a few more."""
 
-	def __init__(self, x = None, y = None , w = None , h = None):
+	def __init__(self, id = None, x = None, y = None , w = None , h = None):
+		self.id = id
 		self.x = x
 		self.y = y
 		self.w = w
 		self.h = h
 
 	def __str__(self):
-		result = "(x, y): (" + str(self.x) + ", " + str(self.y) + ")"
-		result += "\n"
-		result += "(w, h): (" + str(self.w) + ", " + str(self.h) + ")"
+		result = str(self.id) + " (" + str(self.x) + "," + str(self.y) + ") "
+		result += str(self.w) + "x" + str(self.h)
 		return result
 	
 	def left(self):
@@ -49,14 +51,17 @@ class Rectangle:
 
 def part1(arg):
 	output = ""
-	test = Rectangle(7, 5, 2, 3)
-	test2 = Rectangle()
-	print("A dead ass rectangle: ")
-	print(str(test2))
-	print(str(test2.area()))
-	print("A less-so dead ass rectangle: ")
-	print(str(test))
-	print(str(test.area()))
+	list_rectangles = []
+	for line in arg:
+		line = re.sub('[@:]', '', line)
+		id,coords,dimensions = line.split()
+		x,y = coords.split(',')
+		w,h = dimensions.split('x')
+
+		r = Rectangle(id, x, y, w, h)
+		list_rectangles.append(r)
+		
+
 	print("PART 1: " + str(output))
 
 # PART 2
