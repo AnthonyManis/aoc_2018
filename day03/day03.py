@@ -98,13 +98,6 @@ def part1(arg):
 	# Find overlap between two rectangles, and mark that area as a 1 in grid.
 	grid = [[0 for x in range(1000)] for y in range(1000)]
 
-	r1 = Rectangle("#1", 1, 3, 4, 4)
-	r2 = Rectangle("#2", 3, 1, 4, 4)
-	r3 = Rectangle("#3", 5, 5, 2, 2)
-
-	print(r1.intersectionAsRectangle(r2))
-	print(r1.intersectionAsRectangle(r3))
-	print(r2.intersectionAsRectangle(r3))
 
 	print("PART 1: " + str(output))
 
@@ -115,7 +108,12 @@ def part2(arg):
 
 if __name__ == '__main__':
 	print("EXAMPLE 1: ")
-	#part1(example1_input)
+	r1 = Rectangle("#1", 1, 3, 4, 4)
+	r2 = Rectangle("#2", 3, 1, 4, 4)
+	r3 = Rectangle("#3", 5, 5, 2, 2)
+	print(r1.intersectionAsRectangle(r2))
+	print(r1.intersectionAsRectangle(r3))
+	print(r2.intersectionAsRectangle(r3))
 	print("EXAMPLE 2: ")
 	#part2(example2_input)
 	print("END OF EXAMPLES")
