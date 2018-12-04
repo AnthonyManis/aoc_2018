@@ -48,9 +48,17 @@ class Rectangle:
 	def area(self):
 		return self.w * self.h
 
+	def containsPoint(self, point_x, point_y):
+		if self.left() < point_x <= self.right():
+			if self.top() < point_y <= self.bottom():
+				return True
+
+		return False
+
 
 def part1(arg):
 	output = ""
+	# Construct a list of rectangles from the input lines.
 	list_rectangles = []
 	for line in arg:
 		line = re.sub('[@:]', '', line)
@@ -60,7 +68,10 @@ def part1(arg):
 
 		r = Rectangle(id, x, y, w, h)
 		list_rectangles.append(r)
-		
+
+	
+	# For each square inch, check if two or more rectangles contain it.
+
 
 	print("PART 1: " + str(output))
 
