@@ -23,10 +23,10 @@ class Rectangle:
 
 	def __init__(self, id = None, x = None, y = None , w = None , h = None):
 		self.id = id
-		self.x = x
-		self.y = y
-		self.w = w
-		self.h = h
+		self.x = int(x)
+		self.y = int(y)
+		self.w = int(w)
+		self.h = int(h)
 
 	def __str__(self):
 		result = str(self.id) + " (" + str(self.x) + "," + str(self.y) + ") "
@@ -52,8 +52,20 @@ class Rectangle:
 		if self.left() < point_x <= self.right():
 			if self.top() < point_y <= self.bottom():
 				return True
-
+		
 		return False
+
+	def intersectionAsRectangle(self, other):
+		# Is other.left contained in self?
+			# How much overlap is there?
+		# Is other.right contained in self?
+			# How much overlap is there?
+
+
+		# Is other.top contained in self?
+			# How much overlap is there?
+		# Is other.bottom contained in self?
+			# How much overlap is there?
 
 
 def part1(arg):
@@ -69,9 +81,9 @@ def part1(arg):
 		r = Rectangle(id, x, y, w, h)
 		list_rectangles.append(r)
 
+	# Find overlap between two rectangles, and mark that area as a 1 in grid.
+	grid = [[0 for x in range(1000)] for y in range(1000)]
 	
-	# For each square inch, check if two or more rectangles contain it.
-
 
 	print("PART 1: " + str(output))
 
