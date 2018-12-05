@@ -48,7 +48,7 @@ class Rectangle:
 	def area(self):
 		return self.w * self.h
 
-	def intersectionAsRectangle(self, other):
+	def __intersection(self, other):
 		intersection = Rectangle(self.id + other.id)
 		left_edge = right_edge = top_edge = bottom_edge = 0
 		x_overlap = y_overlap = 0
@@ -81,7 +81,13 @@ class Rectangle:
 		else:
 			return False
 		
-
+	def intersectionAsRectangle(self, other):
+		a = self.__intersection(other)
+		b = other.__intersection(self)
+		if a:
+			return a
+		else:
+			return b
 
 def part1(arg):
 	output = 0
@@ -96,8 +102,9 @@ def part1(arg):
 		r = Rectangle(id, x, y, w, h)
 		list_rectangles.append(r)
 
-	# Find overlap between two rectangles, and mark that area as a 1 in grid.
 	grid = [[0 for x in range(1000)] for y in range(1000)]
+	"""
+	# Find overlap between two rectangles, and mark that area as a 1 in grid.
 
 	for rect1 in list_rectangles:
 		for rect2 in list_rectangles:
@@ -105,14 +112,23 @@ def part1(arg):
 				intersection = rect1.intersectionAsRectangle(rect2)
 				if intersection:
 					for i in range(intersection.left(), intersection.right()):
-						for j in range(intersection.top(),intersection.bottom()):
+						for j in range(intersection.top(), intersection.bottom()):
+							#print("Intersection:", rect1.id, rect2.id, i, j)
 							grid[i][j] = 1
 
+	"""
+	
+	# Add 1 to each space in the grid occupied by a rectangle.
+	for rect in list_rectangles:
+		for x in range(rect.left(), rect.right()):
+			for y in range(rect.top(), rect.bottom()):
+				grid[x][y] += 1
+			
 	# Count up the 1s in the grid:
 	for x in grid:
 		for y in x:
-			output += y
-			
+			if y > 1:
+				output += 1
 
 	print("PART 1: " + str(output))
 
@@ -129,7 +145,10 @@ if __name__ == '__main__':
 	print(r1.intersectionAsRectangle(r2))
 	print(r1.intersectionAsRectangle(r3))
 	print(r2.intersectionAsRectangle(r3))
-	example1 = ["#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4", "#3 @ 5,5: 2x2"]	
+	r4 = Rectangle("#4", 0, 0, 10, 10)
+	r5 = Rectangle("#5", 9, 9, 1, 1)
+	print(r4.intersectionAsRectangle(r5))
+	example1 = ["#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4", "#3 @ 5,5: 2x2", "#4 @ 0,0: 10x10", "#5 @ 9,9: 1x1"]
 	part1(example1)
 	print("EXAMPLE 2: ")
 	#part2(example2_input)
