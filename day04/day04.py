@@ -10,14 +10,17 @@ def load_input(infile):
 	with open(infile, 'r') as fp:
 		for line in fp:
 			line = line.strip()
-			line = int(line)
+			line = line
 			if line:
 				lines.append(line)
 
 		return lines
 
 # PART 1
-def part1(freq_changes):
+def part1(lines):
+	lines.sort()
+	for l in lines:
+		print(l)
 
 if __name__ == '__main__':
 	input = load_input(INPUTFILE)
