@@ -131,11 +131,20 @@ def part1(arg):
 				output += 1
 
 	print("PART 1: " + str(output))
-
-# PART 2
-def part2(arg):
-	output = ""
-	print("PART 2: " + str(output))
+	
+	# Check each rectangle to see if the grid has a 1 in it for all the spaces in that rect.
+	single_claim_rect_id = ""
+	for rect in list_rectangles:
+		conflict = False
+		for x in range(rect.left(), rect.right()):
+			for y in range(rect.top(), rect.bottom()):
+				if grid[x][y] > 1:
+					conflict = True
+		if not conflict:
+			print(rect.id)	
+			single_claim_rect_id = rect.id
+	
+	print("PART 2: ", single_claim_rect_id)
 
 if __name__ == '__main__':
 	print("EXAMPLE 1: ")
@@ -151,8 +160,6 @@ if __name__ == '__main__':
 	example1 = ["#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4", "#3 @ 5,5: 2x2", "#4 @ 0,0: 10x10", "#5 @ 9,9: 1x1"]
 	part1(example1)
 	print("EXAMPLE 2: ")
-	#part2(example2_input)
 	print("END OF EXAMPLES")
 	input = load_input(INPUTFILE)
 	part1(input)
-	part2(input)
