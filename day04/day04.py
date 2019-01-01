@@ -58,7 +58,8 @@ def part1(lines):
 	# For each guard we need to know:
 	#  1 Total minutes slept
 	#  2 Minute they slept the most
-	
+	for guard_id, sleep_list in guard_dict:
+		print('guard ' + gaurd_id + ' slept for a total of ' str(sum(sleep_list)))
 
 if __name__ == '__main__':
 	input = load_input(INPUTFILE)
