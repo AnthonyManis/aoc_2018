@@ -50,7 +50,11 @@ def part1(lines):
 			sleep_end_minute = int(minute)
 			#print(str(hour) + ':' + str(minute),'guard ' + str(guard_on_duty) + 'wakes up')
 			print('guard ' + str(guard_on_duty) + ' slept from ' + str(sleep_start_minute) + ' til ' + str(sleep_end_minute))
-
+			# Record a sleep event by incrementing in guard's list.
+			for i in number_of_minutes:
+				if sleep_start_minute <= i < sleep_end_minute:
+					guard_dict[guard_on_duty] += 1
+			print(guard_dict[guard_on_duty])
 
 	# For each guard we need to know:
 	#  1 Total minutes slept
