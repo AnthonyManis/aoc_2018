@@ -21,16 +21,15 @@ def load_input(infile):
 # PART 1
 def part1(lines):
 	coords = {}
-	letter_ascii = ord('A')
+	id = 0
 	for line in lines:
-		letter = chr(letter_ascii)
 		x, y = map(int, line.split(','))
-		coords[letter] = (x,y)
-		letter_ascii += 1
+		coords[id] = (x,y)
+		id += 1
 
 	# Get lowest and highest x and y coordinates so we can just make a grid.
-	low_x = high_x = coords.get('a')[0]
-	low_y = high_y = coords.get('a')[1]
+	low_x = high_x = coords[0][0]
+	low_y = high_y = coords[0][1]
 	for x, y in coords.values():
 		low_x = x if x < low_x else low_x
 		low_y = y if y < low_y else low_y
@@ -38,6 +37,7 @@ def part1(lines):
 		high_y = y if y > high_y else high_y
 
 	# Technically it's offset by (low_x, low_y), but I'm not sure that I care.
+	# Interestingly test input is of size (313,313)
 	grid = [ [0 for x in range(high_x - low_x)] for y in range(high_y - low_y) ]
 
 
