@@ -23,6 +23,7 @@ def part1(characters):
 	print('Units before=', len(characters))
 	i = 0
 	while i < len(characters):
+		deleted_characters = False
 		if i + 1 < len(characters):
 			c = characters[i]
 			n = characters[i+1]
@@ -32,11 +33,14 @@ def part1(characters):
 				if not re.match(c, n):
 					del characters[i]
 					del characters[i]
-					# If we deleted some characters, maybe we should take a few steps back to analyze more characters.
-					# 1 step back plus 1 since we're about to increment at end of loop.
-					# This is a bit sloppy. It gives the right answer, but if you change it to for instance i -= 3 it gives the wrong answer.
-					i -= 2
-		i += 1
+					deleted_characters = True
+
+	
+		# If we deleted a character, please take a step back to see if the deletion cascades.
+		if deleted_characters:
+			i -= 1
+		else:
+			i += 1
 	print('PART 1=', len(characters))
 
 	
