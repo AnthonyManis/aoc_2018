@@ -5,6 +5,7 @@
 
 import re
 import copy
+import subprocess
 
 INPUTFILE = 'input.txt'
 
@@ -38,7 +39,7 @@ def expandTo(label, pair, g, gprime):
 	y = pair[1]
 	result = 0
 	if g[x][y] == '0':
-		if gprime[x][y]  == '0':
+		if gprime[x][y]  == '0' or gprime[x][y] == label:
 			gprime[x][y] = label
 			result = 1
 		else:
@@ -49,14 +50,27 @@ def expandTo(label, pair, g, gprime):
 	return result
 	
 # Maybe useful, maybe not. Depends on the visibility of labels chosen.
-# Useless unless the terminal width is >= len(grid)
-# Currently uh.. limited to 200 columns.
+# Artificially breaking after TERMINAL_COLS columns
+TERMINAL_COLS = 200
 def printGrid(grid):
+	# This is fun... get the width of the terminal in columns,
+	# and use that for the printing width of printGrid
+	sp = subprocess.Popen(['tput', 'cols'], stdout=subprocess.PIPE)
+	(output, err) = sp.communicate()
+	TERMINAL_COLS = int(output)
+
 	for y in range(len(grid[0])):
 		line_string = ''
-		for x in range(200):
+		for x in range(min(len(grid), TERMINAL_COLS)):
 			line_string += grid[x][y]
 		print(line_string)
+	
+	if len(grid) > TERMINAL_COLS:
+		for y in range(len(grid[0])):
+			line_string = ''
+			for x in range(TERMINAL_COLS, len(grid)):
+				line_string += grid[x][y]
+			print(line_string)
 
 # PART 1
 def part1(lines):
