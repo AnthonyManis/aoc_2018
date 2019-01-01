@@ -43,13 +43,10 @@ def part1(lines):
 		minute = event_match.group(2)
 		if 'asleep' in event_match.group(3):
 			sleep_start_minute = int(minute)
-			#print(str(hour) + ':' + str(minute),'guard ' + str(guard_on_duty) + 'falls asleep')
 		# Luckily, a guard always wakes up before the end shift event is received,
 		# so we can use the wake event to record the entire sleep duration in the list.
 		if 'wakes' in event_match.group(3):
 			sleep_end_minute = int(minute)
-			#print(str(hour) + ':' + str(minute),'guard ' + str(guard_on_duty) + 'wakes up')
-			#print('guard ' + str(guard_on_duty) + ' slept from ' + str(sleep_start_minute) + ' til ' + str(sleep_end_minute))
 			# Record a sleep event by incrementing in guard's list.
 			for i in range(number_of_minutes):
 				if sleep_start_minute <= i < sleep_end_minute:
@@ -66,7 +63,6 @@ def part1(lines):
 			best_guard = guard_id
 			most_minutes_slept = sum_minutes
 	print('Best guard #' + str(best_guard), 'Slept for', most_minutes_slept, 'minutes!')
-	print(guard_dict[best_guard])
 
 	slept_minute_max = 0
 	choice_minute = None
@@ -78,6 +74,20 @@ def part1(lines):
 	print('Choice Minute:', choice_minute)
 	print('Checksum: ', int(best_guard) * int(choice_minute))
 
+	print('Part 2: Now we don\'t care about who the best guard is, just looking for the best minute.')
+	sleep_minute_max = 0
+	choice_minute = None
+	choice_guard = None
+	for guard_id, sleep_list in guard_dict.items():
+		for i in range(number_of_minutes):
+			slept_this_minute = guard_dict[guard_id][i]
+			if slept_this_minute > slept_minute_max:
+				choice_minute = i
+				choice_guard = guard_id
+				slept_minute_max = slept_this_minute
+	print('Choice guard', choice_guard, 'Choice minute', choice_minute)
+	print('Checksum: ', int(choice_guard) * int(choice_minute))
+		
 if __name__ == '__main__':
 	input = load_input(INPUTFILE)
 	part1(input)
