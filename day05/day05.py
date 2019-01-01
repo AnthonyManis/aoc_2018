@@ -21,7 +21,6 @@ def load_input(infile):
 # PART 1
 def part1(characters):
 	print('Units before=', len(characters))
-	original_characters = characters
 	i = 0
 	while i < len(characters):
 		deleted_characters = False
@@ -43,7 +42,6 @@ def part1(characters):
 		else:
 			i += 1
 	print('PART 1=', len(characters))
-	print('Part 2=', len(orignal_characters))
 
 	
 		
