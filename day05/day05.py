@@ -20,19 +20,19 @@ def load_input(infile):
 
 # PART 1
 def part1(characters):
-	print('Units before=', len(characters))
+	charlist = characters.copy()
 	i = 0
-	while i < len(characters):
+	while i < len(charlist):
 		deleted_characters = False
-		if i + 1 < len(characters):
-			c = characters[i]
-			n = characters[i+1]
+		if i + 1 < len(charlist):
+			c = charlist[i]
+			n = charlist[i+1]
 			# First we must know if the letter is the same, so ignore case.
 			if re.match(c, n, flags=re.IGNORECASE):
 				# Then again without ignorecase to check if case/'polarity' is different.
 				if not re.match(c, n):
-					del characters[i]
-					del characters[i]
+					del charlist[i]
+					del charlist[i]
 					deleted_characters = True
 
 	
@@ -41,10 +41,36 @@ def part1(characters):
 			i -= 1
 		else:
 			i += 1
-	print('PART 1=', len(characters))
+	return (len(charlist))
 
+def part2(characters):
+	characters_string = ''.join(characters)
+
+	# In essence, iterate through alphabet removing that character from the list,
+	# Run part1 analysis on the list and record the smallest resulting polymer & corresponding letter.
+	# Print the smallest length (we don't care about which letter it is for some reason).
+
+	# For every letter in the alphabet.
+	minimum_length = len(characters)
+	best_letter = None
+	ascii_letter = ord('a')
+	for i in range(26):
+		letter = chr(ascii_letter)
+		# Purge the letter from the string.
+		charlist = list(re.sub(letter, '', characters_string, flags=re.IGNORECASE))
+		poly_len = part1(charlist)
+		if poly_len < minimum_length:
+			minimum_length = poly_len
+			best_letter = letter
+
+		# Loop increment
+		ascii_letter += 1
+
+	print('PART 2 =', minimum_length)
+	print('Best letter was', best_letter)
 	
 		
 if __name__ == '__main__':
 	input = load_input(INPUTFILE)
-	part1(input)
+	print('PART 1 =', part1(input))
+	part2(input)
