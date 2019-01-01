@@ -18,13 +18,43 @@ def load_input(infile):
 				lines.append(line)
 
 		return lines
+
+# Returns True if the coordinates given by pair are valid indices in the 2D grid.
+# Otherwise returns False.
+def isInBounds(pair, grid):
+	if 0 <= pair[0] < len(grid):
+		if 0 <= pair[1] < len(grid[0]):
+			return True
+	return False
+
+# Modifies gprime to expand the given label into indices denoted by pair.
+# If a conflict is detected, expand a '.' instead.
+# Returns the number of spaces that became non-zero during the operation.
+def expandTo(label, pair, g, gprime):
+	if not isInBounds(pair, g):
+		return 0
+
+	x = pair[0]
+	y = pair[1]
+	result = 0
+	if g[x][y] == '0':
+		if gprime[x][y]  == '0':
+			gprime[x][y] = label
+			result = 1
+		else:
+			# Conflict in gprime. Set to dot, but result 0 since we didn't fill a "new" space.
+			gprime[x][y] = '.'
+			result = 0
+
+	return result
 	
 # Maybe useful, maybe not. Depends on the visibility of labels chosen.
 # Useless unless the terminal width is >= len(grid)
+# Currently uh.. limited to 200 columns.
 def printGrid(grid):
 	for y in range(len(grid[0])):
 		line_string = ''
-		for x in range(len(grid)):
+		for x in range(200):
 			line_string += grid[x][y]
 		print(line_string)
 
@@ -34,6 +64,8 @@ def part1(lines):
 	# Assign a single-character label to each starting node.
 	label_ascii = ord('A')
 	for line in lines:
+		# Skip non-letter labels.
+		label_ascii = 97 if label_ascii == 91 else label_ascii
 		label = chr(label_ascii)
 		x, y = map(int, line.split(','))
 		coords[label] = (x, y)
@@ -65,18 +97,35 @@ def part1(lines):
 	# Copy the grid to grid_prime
 	# If a space has an id in it, expand that id outwards in four directions.
 	# *Notation note: not using upper/lowercase as in example, since we need more labels than just 26.
-	#  000    0A0
+	#  000	  0A0
 	#  0A0 -> AAA
-	#  000    0A0
+	#  000	  0A0
 	# With some exceptions:
 	#  0 Don't go out of bounds.
 	#  1 If a space is already occupied in grid, don't modify it.
-	#  2 If a space is NOT occupied in grid, but IS occupied in grid_prime, then set it to a '.' (neutral for equal distance between nodes)
+	#  2 If a space is NOT occupied in grid, but IS occupied in grid_prime, instead set it to a '.' (neutral for equal distance between nodes)
+	# Finally, grid becomes grid prime.
 	grid = copy.deepcopy(grid_nodes_only)
-	while grid_count < len(grid) * len(grid[0]):
-		grid_prime = copy.deepcopy(grid_nodes_only)
-		break
+	last_grid_count = 0
+	while grid_count > last_grid_count:
+		last_grid_count = grid_count
+		grid_prime = copy.deepcopy(grid)
+		for x in range(len(grid)):
+			for y in range(len(grid[0])):
+				# Expand in all directions if label is nonzero and non-dot.
+				label = grid[x][y]
+				if label != '0' and label != '.':
+					# Left
+					grid_count += expandTo(label, (x - 1, y), grid, grid_prime)
+					# Up
+					grid_count += expandTo(label, (x, y - 1), grid, grid_prime)
+					# Right
+					grid_count += expandTo(label, (x + 1, y), grid, grid_prime)
+					# Down
+					grid_count += expandTo(label, (x, y + 1), grid, grid_prime)
+		grid = grid_prime
 
+	printGrid(grid)
 
 if __name__ == '__main__':
 	input = load_input(INPUTFILE)
