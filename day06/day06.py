@@ -167,10 +167,10 @@ def part1(lines):
 
 	# Alternative way to visualize grid: Don't show infinite spaces or dots.
 	#for x in range(len(grid)):
-		#for y in range(len(grid[0])):
-			#label = grid[x][y]
-			#if label not in valid_coords:
-				#grid[x][y] = ' '
+	#	for y in range(len(grid[0])):
+	#		label = grid[x][y]
+	#		if label not in valid_coords:
+	#			grid[x][y] = ' '
 
 	printGrid(grid)
 
