@@ -1,6 +1,6 @@
 #!/usr/bin python3
 #
-# Advent of Code 2018 - Day 4
+# Advent of Code 2018 - Day 6
 #
 
 import re
@@ -192,15 +192,20 @@ def part1(lines):
 
 	printGrid(grid)
 
-	# Compute and print areas.
+	# Compute and print largest area.
 	areas = {}
+	largest = 0
 	for label in valid_coords:
 		areas[label] = 0
 		for x in range(len(grid)):
 			for y in range(len(grid[0])):
 				if grid[x][y] == label:
 					areas[label] += 1
-		print(label, areas[label])
+		if areas[label] > largest:
+			largest = areas[label]
+			largest_label = label
+
+	print('PART 1=' + str(largest) + ' for label ' + largest_label)
 
 def part2(lines, threshold):
 
@@ -233,5 +238,5 @@ def part2(lines, threshold):
 
 if __name__ == '__main__':
 	input = load_input(INPUTFILE)
-	#part1(input)
+	part1(input)
 	part2(input, 10000)
