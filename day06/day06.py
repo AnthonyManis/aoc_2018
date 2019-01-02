@@ -115,48 +115,30 @@ def part1(lines):
 
 	# It's acceptable to waste some space rather than deal with offsets and oob indices.
 	# So we'll start the 2D list at (0, 0)
-	grid_nodes_only = [ ['0' for y in range(high_y + 1)] for x in range(high_x + 1) ]
+	grid = [ ['0' for y in range(high_y + 1)] for x in range(high_x + 1) ]
 
-	# Add initial nodes to the grid.
-	grid_count = 0
-	for label, node in coords.items():
-		#print(label, node[0], node[1])
-		grid_nodes_only[node[0]][node[1]] = label
-		grid_count += 1
+	# For each space in the grid, get its distance to every node.
+	# Keep track of the shortest distance, and labels that have that distance.
+	for x in range(len(grid)):
+		for y in range(len(grid[0])):
+			shortest_distance = None
+			shortest_labels = []
+			for label in coords:
+				distance = calculateDistanceBetween(x, y, coords[label][0], coords[label][1])
+				# New shortest, reset shortest_labels to single element list.
+				if shortest_distance == None or distance < shortest_distance:
+					shortest_distance = distance
+					shortest_labels = [label]
+				# If it's a tie, we append another label to the list.
+				elif distance == shortest_distance:
+					shortest_labels.append(label)
+					
 
-	# For each iteration until the grid is full
-	# Copy the grid to grid_prime
-	# If a space has an id in it, expand that id outwards in four directions.
-	# *Notation note: not using upper/lowercase as in example, since we need more labels than just 26.
-	#  000	  0A0
-	#  0A0 -> AAA
-	#  000	  0A0
-	# With some exceptions:
-	#  0 Don't go out of bounds.
-	#  1 If a space is already occupied in grid, don't modify it.
-	#  2 If a space is NOT occupied in grid, but IS occupied in grid_prime, instead set it to a '.' (neutral for equal distance between nodes)
-	# Finally, grid becomes grid prime.
-	grid = copy.deepcopy(grid_nodes_only)
-	last_grid_count = 0
-	while grid_count > last_grid_count:
-		last_grid_count = grid_count
-		grid_prime = copy.deepcopy(grid)
-		for x in range(len(grid)):
-			for y in range(len(grid[0])):
-				# Expand in all directions if label is nonzero and non-dot.
-				label = grid[x][y]
-				if label != '0' and label != '.':
-					# Left
-					grid_count += expandTo(label, (x - 1, y), grid, grid_prime)
-					# Up
-					grid_count += expandTo(label, (x, y - 1), grid, grid_prime)
-					# Right
-					grid_count += expandTo(label, (x + 1, y), grid, grid_prime)
-					# Down
-					grid_count += expandTo(label, (x, y + 1), grid, grid_prime)
-		grid = grid_prime
-
-
+			if len(shortest_labels) > 1:
+				grid[x][y] = '.'
+			else:
+				grid[x][y] = shortest_labels[0]
+	
 	# Now for the list of labels. Eliminate any label that exists on the grid border.
 	# These labels are "unbounded", so they don't count.
 	# The remaining labels in the list will all be bounded with a finite area.
