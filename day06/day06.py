@@ -202,7 +202,7 @@ def part1(lines):
 					areas[label] += 1
 		print(label, areas[label])
 
-def part2(lines):
+def part2(lines, threshold):
 
 	labelCoords(lines)
 
@@ -217,10 +217,21 @@ def part2(lines):
 			score = 0
 			for label in coords:
 				score += calculateDistanceBetween(x, y, coords[label][0], coords[label][1])
+			grid_scores[x][y] = score
+
+	# Find the coordinates that meet the criteria.
+	# Less than threshold.
+	area = 0
+	for x in range(len(grid_scores)):
+		for y in range(len(grid_scores[0])):
+			if grid_scores[x][y] < threshold:
+				area += 1
+	print('PART 2=' + str(area))
+				
 
 	return
 
 if __name__ == '__main__':
 	input = load_input(INPUTFILE)
 	#part1(input)
-	part2(input)
+	part2(input, 10000)
