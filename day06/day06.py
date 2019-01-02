@@ -139,7 +139,48 @@ def part1(lines):
 					grid_count += expandTo(label, (x, y + 1), grid, grid_prime)
 		grid = grid_prime
 
-	printGrid(grid)
+
+	# Now for the list of labels. Eliminate any label that exists on the grid border.
+	# These labels are "unbounded", so they don't count.
+	# The remaining labels in the list will all be bounded with a finite area.
+	valid_coords = copy.deepcopy(coords)
+	for x in range(len(grid)):
+		# Top
+		label = grid[x][0]
+		if label in valid_coords:
+			del valid_coords[label]
+
+		# Bottom
+		label = grid[x][-1]
+		if label in valid_coords:
+			del valid_coords[label]
+			
+	for y in range(len(grid[0])):
+		# Left
+		label = grid[0][y]
+		if label in valid_coords:
+			del valid_coords[label]
+		
+		# Right
+		label = grid[-1][y]
+		if label in valid_coords:
+			del valid_coords[label]
+
+	for x in range(len(grid)):
+		for y in range(len(grid[0])):
+			label = grid[x][y]
+			if label not in valid_coords:
+				grid[x][y] = ' '
+
+	areas = {}
+	for label in valid_coords:
+		areas[label] = 0
+		for x in range(len(grid)):
+			for y in range(len(grid[0])):
+				if grid[x][y] == label:
+					areas[label] += 1
+		print(label, areas[label])
+	#printGrid(grid)
 
 if __name__ == '__main__':
 	input = load_input(INPUTFILE)
